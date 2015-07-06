@@ -2,7 +2,7 @@ TeamUtililisation
 =========================
 
 ## Overview
-![alt text](https://github.com/nikantonelli/TeamUtilisation/blob/master/Doc/Untitled.png)
+![alt text](https://github.com/nikantonelli/TeamUtilisation/blob/master/Docs/Untitled.png)
 
 
 ## License
