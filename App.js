@@ -88,6 +88,12 @@ Ext.define('CustomApp', {
                     value: Ext.getCmp('EndDate').getValue()
                 }
             ],
+            sorters: [
+                {
+                    property: 'StartDate',
+                    direction: 'ASC'
+                }
+            ],
             listeners: {
                 load: function(store, data, success) {
                     _.each(data, function(record) {
@@ -120,8 +126,14 @@ Ext.define('CustomApp', {
             autoLoad: 'true',
             listeners: {
                 load: function(store, data, success) {
-                    sortedIters = _.groupBy(data, function(record) { return record.get('Iteration')._refObjectName;} );
-
+                    var sortedIters = []; 
+                    _.each(iterationOIDs, function(objID) {
+                        sortedIters.push( _.filter(data,
+                            function(record) {
+                                return record.get('Iteration')._refObjectName == objID.oid; }
+                            )
+                        );
+                    });
                     var summs = [];
                     _.each(sortedIters,
                         function(n) {
