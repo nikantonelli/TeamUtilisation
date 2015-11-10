@@ -203,7 +203,8 @@ Ext.define('CustomApp', {
                                 position: 'left',
                                 field: ['Estimate', 'Capacity'],
                                 title: 'Task Hours',
-                                grid: true
+                                grid: true,
+                                minimum: 0
                             },
                             {
                                 type: 'Category',
