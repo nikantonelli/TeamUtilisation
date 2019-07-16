@@ -3,7 +3,7 @@
 <head>
     <title>TeamUtililisation</title>
 
-    <script type="text/javascript" src="/apps/2.0/sdk-debug.js"></script>
+    <script type="text/javascript" src="/apps/2.1/sdk-debug.js"></script>
 
     <script type="text/javascript">
         Rally.onReady(function () {
@@ -57,7 +57,7 @@ Ext.define('CustomApp', {
 
     _chartRefresh: function()
     {
-        Ext.getCmp('CapChart').destroy();
+        if ( Ext.getCmp('CapChart')) { Ext.getCmp('CapChart').destroy();}
         this.iterationOIDs = [];
         this.iterStore.destroyStore();
         this._startApp(this);
@@ -135,14 +135,16 @@ Ext.define('CustomApp', {
             autoLoad: 'true',
             listeners: {
                 load: function(store, data, success) {
-                    var sortedIters = []; // = _.groupBy(data, function(record) { return record.get('Iteration')._refObjectName;} );
-//                    debugger;
+                    var sortedIters = []; 
                     _.each(iterationOIDs, function(objID) {
-                        sortedIters.push( _.filter(data,
-                            function(record) {
-                                return record.get('Iteration')._refObjectName == objID.oid; }
-                            )
-                        );
+                        var filtered = _.filter(data,
+                                function(record) {
+                                    return record.get('Iteration')._refObjectName == objID.oid; 
+                                }
+                            );
+                        if (filtered.length > 0) {
+                            sortedIters.push( filtered);
+                        }
                     });
                     var summs = [];
                     _.each(sortedIters,
@@ -181,7 +183,7 @@ Ext.define('CustomApp', {
                         '#f9a814',
                         '#ee6c19',
                         '#105cab',
-                        '107c1e',
+                        '#107c1e',
                         '#df1a7b',
                         '#4a1d7e'
                     ];
@@ -213,7 +215,8 @@ Ext.define('CustomApp', {
                                 position: 'left',
                                 field: ['Estimate', 'Capacity'],
                                 title: 'Task Hours',
-                                grid: true
+                                grid: true,
+                                minimum: 0
                             },
                             {
                                 type: 'Category',
@@ -328,7 +331,8 @@ Ext.define('CustomApp', {
 
             Rally.launchApp('CustomApp', {
                 name:"TeamUtililisation",
-	            parentRepos:""
+                parentRepos:"",
+                version:"0.1.1"
             });
 
         });

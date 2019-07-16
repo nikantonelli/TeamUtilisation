@@ -48,7 +48,7 @@ Ext.define('CustomApp', {
 
     _chartRefresh: function()
     {
-        Ext.getCmp('CapChart').destroy();
+        if ( Ext.getCmp('CapChart')) { Ext.getCmp('CapChart').destroy();}
         this.iterationOIDs = [];
         this.iterStore.destroyStore();
         this._startApp(this);
@@ -128,11 +128,14 @@ Ext.define('CustomApp', {
                 load: function(store, data, success) {
                     var sortedIters = []; 
                     _.each(iterationOIDs, function(objID) {
-                        sortedIters.push( _.filter(data,
-                            function(record) {
-                                return record.get('Iteration')._refObjectName == objID.oid; }
-                            )
-                        );
+                        var filtered = _.filter(data,
+                                function(record) {
+                                    return record.get('Iteration')._refObjectName == objID.oid; 
+                                }
+                            );
+                        if (filtered.length > 0) {
+                            sortedIters.push( filtered);
+                        }
                     });
                     var summs = [];
                     _.each(sortedIters,
@@ -171,7 +174,7 @@ Ext.define('CustomApp', {
                         '#f9a814',
                         '#ee6c19',
                         '#105cab',
-                        '107c1e',
+                        '#107c1e',
                         '#df1a7b',
                         '#4a1d7e'
                     ];
